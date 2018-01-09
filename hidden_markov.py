@@ -28,4 +28,4 @@ mapDown = np.random.randint(size2,size=(1,size1))
 states1 = np.random.rand(samples,size1)
 states2 = np.random.rand(samples,size2)
 trans1 = makeTransMat(size1)
-trans2 = makeTransMat(size2)
+
