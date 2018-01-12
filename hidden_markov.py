@@ -34,11 +34,11 @@ def getStationaryDistribution(A):
     
     return stationaryDist
    
-population = 5000
-samples = 50
+population = 10000
+samples = 15
 size1 = 5
 size2 = 3
-trans1 = makeTransMat(size1)
+
 transCumulative = np.zeros(trans1.shape)
 for i in range(0,size1):
     for j in range(0,size1):
@@ -78,18 +78,16 @@ states = states.astype(int)
       
 fracStates = np.zeros((samples,size1))
 for i in range(0,samples):
-    for j in range(0,samples):
-        fracStates[i] = np.bincount(states[i])
+    fracStates[i] = np.bincount(states[i])
         
-fracStates = fracStates.cumsum(0)
-fracNorms = population*(range(0,samples)+np.ones((1,samples)))
-fracNorms = np.power(fracNorms,-1)
-fracNorms = np.diag(fracNorms[0])
-fracStates = fracNorms*np.asmatrix(fracStates)
+#fracStates = fracStates.cumsum(0)
+#fracNorms = population*(range(0,samples)+np.ones((1,samples)))
+fracStates = fracStates / population
+
 
 plt.plot(fracStates)
 plt.ylabel('some numbers')
 plt.show()
-
+plt.ylim((0,1))
 
 
