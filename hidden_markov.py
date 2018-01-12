@@ -11,17 +11,37 @@ import random as rd
 import matplotlib.pyplot as plt
 
 def makeTransMat(sz):
-    # transition matrix with 0s on the diagonal (to match 4.3 in T-C)
-    # evaluate as input^t * P
-    trans = np.random.rand(sz,sz)
-    transDiag = np.diag(np.diag(trans))
-    trans = trans - transDiag
-    trans = np.asmatrix(trans)
-    trans_rowSums = trans*np.matrix.transpose(np.matrix(np.ones(sz)))
-    trans_rowSums = np.asarray(np.matrix.transpose(trans_rowSums))
-    trans_rowSumsInv = np.power(trans_rowSums,-1)
-    trans_rowSumsInv = np.asmatrix(np.diag(trans_rowSumsInv[0]))
-    trans = trans_rowSumsInv*trans
+    # weights matrix with 0s on the diagonal (to match 4.3 in T-C)
+    # symmetric. evaluate as input^t * P
+    # it turns out that generating such a matrix that is also doubly stochastic
+    # is nontrivial! So we are not normalizing here
+    trans = np.random.uniform(0,1,size=(sz,sz))
+    trans = trans + trans.T
+    trans = trans - np.diag(np.diag(trans))
+    
+#    trans = np.zeros((sz,sz))
+#    for i in range(0,sz):
+#        leftOver = 1-np.sum(trans[i,0:i])
+#        rowVals = np.random.rand(1,sz-(i+1)) # change distribution! no -!
+#        rowVals = leftOver*rowVals/np.sum(rowVals)
+#        trans[i] = np.concatenate((trans[i,0:i+1],rowVals[0]))
+#        trans[:,i] = trans[i].T
+#             
+             
+#    lastRowSum = np.sum(trans[:,sz-1])
+#    lastRowHold = trans[sz-1]/lastRowSum
+#    trans[sz-1] = lastRowHold
+#    trans[:,sz-1] = lastRowHold
+        
+#    trans = np.random.rand(sz,sz)
+#    transDiag = np.diag(np.diag(trans))
+#    trans = trans - transDiag
+#    trans = np.asmatrix(trans)
+#    trans_rowSums = trans*np.matrix.transpose(np.matrix(np.ones(sz)))
+#    trans_rowSums = np.asarray(np.matrix.transpose(trans_rowSums))
+#    trans_rowSumsInv = np.power(trans_rowSums,-1)
+#    trans_rowSumsInv = np.asmatrix(np.diag(trans_rowSumsInv[0]))
+#    trans = trans_rowSumsInv*trans
     return trans
 
 def getStationaryDistribution(A):
